@@ -11,6 +11,9 @@ Crafty.init(screenWidth,screenHeight, document.getElementById('game'));
 Crafty.background('#000000 url(/images/background-clouds.png) no-repeat center center');
 //Paddle sprite
 Crafty.sprite("images/paddle_red.png", {paddle:[0,0,620,120]});
+Crafty.sprite("images/player/player_idle.png", {player_idle:[0,1,80,110]});
+Crafty.sprite("images/player/player_jump_left.png", {player_jump_left:[1,0,80,110]});
+Crafty.sprite("images/player/player_jump_right.png", {player_jump_right:[1,1,80,110]});
 //Floor
 Crafty.e('floor, 2D, Canvas, Solid, Color')
     .attr({x: 0, y: screenHeight/1.5 - 10, w: screenWidth, h: 10})
@@ -33,11 +36,11 @@ Crafty.e("2D, DOM, Color, solid, bottom")
     .color('black');
 
 //Player
-var player1 = Crafty.e('Player, 2D, Canvas, Color, Solid, Twoway, Gravity, Collision, GroundAttacher')
-    .attr({x: 20, y: screenHeight/1.5 -80, w: 30, h: 30})
-    .color('#B33')
+var player1 = Crafty.e('Player, 2D, Canvas, Color, Solid, Twoway, Gravity, Collision, GroundAttacher, player_idle')
+    .attr({x: 20, y: screenHeight/1.5 -80, w: 40, h: 55})
     .twoway(250)
     .gravity('Solid')
+    .sprite('player_idle')
 	//Does not allow jumping if feet are not above ground
     .bind("CheckLanding", function(ground) {
         if (this.y + this.h > ground.y + this.dy) {
@@ -63,10 +66,9 @@ var player1 = Crafty.e('Player, 2D, Canvas, Color, Solid, Twoway, Gravity, Colli
 	})
     .bind("EnterFrame", function(){
 		//Pauses game upon reaching bottom
-		if (this.y > screenHeight - 60){
+		if (this.y > screenHeight - 80){
             gameOver();
         }
-		
     })
     //Checks for arrow up keypress and deducts doublejumps
     .bind('KeyUp', function(e) {
