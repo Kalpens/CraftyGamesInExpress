@@ -1,1 +1,3 @@
-Crafty.enterScene('JumperStart');
+$("#btnGameOne").click(function(){
+    window.location.href='./gamejumper';
+});
