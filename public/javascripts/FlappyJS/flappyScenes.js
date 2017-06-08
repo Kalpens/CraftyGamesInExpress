@@ -78,7 +78,7 @@ Crafty.defineScene('FlappyGame', function () {
     scoreText.text('Score:' + score);
 
     var bird = Crafty.e('Bird, 2D, Canvas, Solid, Jumper, Gravity, Collision, flappy_start, SpriteAnimation')
-        .attr({x: 200, y: screenHeight/2, w: 40, h: 40})
+        .attr({x: 200, y: screenHeight/6, w: 40, h: 40})
         .gravity()
         .gravityConst(gravityConst)
         .bind('KeyUp', function(e) {
@@ -183,7 +183,7 @@ Crafty.defineScene('StartScreen', function () {
         });
     var hard = Crafty.e('2D, Canvas, Text, Mouse')
         .attr({ x: screenWidth / 2 + 60 ,
-            y: screenHeight / 6,})
+            y: screenHeight / 2,})
         .text('Hard')
         .textFont({size:'40px', weight:'bold'})
         .textColor('Black')
