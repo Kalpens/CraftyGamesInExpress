@@ -2,11 +2,11 @@ var screenWidth = 1280;
 var screenHeight = 800;
 var score = 0;
 var spawnIntensity = 150;
+var minSpawnHeight = 50;
+var maxSpawnHeight = 500;
 Crafty.defineScene('FlappyGame', function () {
     Crafty.init(screenWidth,screenHeight, document.getElementById('game'));
-
     Crafty.background('#000000 url(/images/background-scenery.png) no-repeat center center');
-    Crafty.sprite("images/Player/player_idle.png", {player:[0,1,80,110]});
 
     var assetsObj = {
         "sprites": {
@@ -24,31 +24,31 @@ Crafty.defineScene('FlappyGame', function () {
                     flappy_middle2: [1, 0],
                     flappy_end: [1, 1],
                 }
+            },
+            "images/Flappy/pipeUp.png": {
+                // This is the width of each image in pixels
+                tile: 52,
+                // The height of each image
+                tileh: 320,
+                // We give names to two individual images
+                map: {
+                    pipeUp: [0, 0]
+                }
+            },
+            "images/Flappy/pipeDown.png": {
+                // This is the width of each image in pixels
+                tile: 52,
+                // The height of each image
+                tileh: 320,
+                // We give names to two individual images
+                map: {
+                    pipeDown: [0, 0]
+                }
             }
         }
     };
 
-    Crafty.load(assetsObj, {});
-
-
-
-//Left wall
-    Crafty.e("2D, DOM, Color, solid, left")
-        .attr({x: 0, y: 0, w: 0, h: screenHeight})
-        .color('black');
-//Right wall
-    Crafty.e("2D, DOM, Color, solid, right")
-        .attr({x: screenWidth, y: 0, w: 0, h: screenHeight})
-        .color('black');
-//Top wall
-    Crafty.e("2D, DOM, Color, solid, top")
-        .attr({x: 0, y: 0, w: screenWidth, h: 0})
-        .color('black');
-//Bottom wall
-    Crafty.e("2D, DOM, Color, solid, bottom")
-        .attr({x: 0, y: screenHeight, w: screenWidth, h: 0})
-        .color('black');
-
+    Crafty.load(assetsObj);
 
     var bird = Crafty.e('Bird, 2D, Canvas, Solid, Jumper, Gravity, Collision, flappy_start, SpriteAnimation')
         .attr({x: 200, y: screenHeight/1.5 -80, w: 40, h: 40})
@@ -82,13 +82,23 @@ Crafty.defineScene('FlappyGame', function () {
             if (this.hit('solid'))
                 this[evt.axis] = evt.oldValue;
         });
+    var scoreText = Crafty.e('2D, DOM, Text')
+        .attr({
+            x: screenWidth - 150,
+            y: 10,
+            z: 100
+        })
+        .textFont({
+            size: '30px',
+            weight: 'bold'
+        });
+    scoreText.text('Score:' + score);
     function spawn()
     {
-        var randomy = getRandomArbitrary(0, 700);
+        var randomy = getRandomArbitrary(minSpawnHeight, maxSpawnHeight);
         var tubeWidth = 80;
-        Crafty.e('tube, 2D, DOM, Color, Collision')
+        Crafty.e('tube, 2D, DOM, Collision, pipeDown')
             .attr({x: 1280, y: 0, w: 80, h: randomy})
-            .color("red")
             .onHit('Bird', function(hitDatas) { // on collision with floor
                 gameOver();
             })
@@ -96,10 +106,13 @@ Crafty.defineScene('FlappyGame', function () {
                 this.x = this.x - 3;
                 if(this.x == -100)
                     this.destroy();
+                if(this.x == bird.x) {
+                    score++;
+                    scoreText.text('Score:' + score);
+                }
             });
-        Crafty.e('tube, 2D, DOM, Color, Collision')
-            .attr({x: 1280, y: randomy + 150, w: 80, h: 800})
-            .color("red")
+        Crafty.e('tube, 2D, DOM, Collision, pipeUp')
+            .attr({x: 1280, y: randomy + 150, w: 80, h: 800 - randomy})
             .onHit('Bird', function(hitDatas) { // on collision with floor
                 gameOver();
             })

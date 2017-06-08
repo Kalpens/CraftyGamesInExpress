@@ -89,7 +89,8 @@ var player1 = Crafty.e('Player, 2D, Canvas, Color, Solid, Twoway, Gravity, Colli
 var scoreText = Crafty.e('2D, DOM, Text')
     .attr({
         x: screenWidth - 150,
-        y: 10
+        y: 10,
+        z: 100
     })
     .textFont({
     size: '30px',
@@ -99,7 +100,8 @@ var scoreText = Crafty.e('2D, DOM, Text')
 var doublejumpText = Crafty.e('2D, DOM, Text')
     .attr({
         x: screenWidth - 260,
-        y: 40
+        y: 40,
+        z: 100
     })
     .textFont({
     size: '30px',
