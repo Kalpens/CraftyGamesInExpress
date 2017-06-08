@@ -1,7 +1,7 @@
 var screenWidth = 1280;
 var screenHeight = 800;
 var score = 0;
-var spawnIntensity = 100;
+var spawnIntensity = 150;
 Crafty.defineScene('FlappyGame', function () {
     Crafty.init(screenWidth,screenHeight, document.getElementById('game'));
 
