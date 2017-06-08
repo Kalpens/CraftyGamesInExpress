@@ -186,7 +186,7 @@ Crafty.defineScene('ViewScores', function () {
     Crafty.background('#000000 url(/images/background-scoreboard.png) no-repeat center center');
     //Adding table to game div
     $('#game').append('<table id="jumperUserList" width="320" border="1"></table>');
-    populateTable();
+    populateJumperTable();
     Crafty.e('2D, Canvas, Text, Mouse')
         .attr({x:295, y:330})
         .text('Play again')

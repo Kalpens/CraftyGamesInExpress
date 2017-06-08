@@ -11,4 +11,9 @@ router.get('/gamejumper', function(req, res, next) {
     res.render('gamejumper', {});
 });
 
+/* GET game2 page. */
+router.get('/gamefljuppy', function(req, res, next) {
+    res.render('gameflappy', {});
+});
+
 module.exports = router;

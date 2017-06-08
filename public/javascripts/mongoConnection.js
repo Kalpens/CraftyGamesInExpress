@@ -3,7 +3,7 @@
  */
 
 // Fill table with data
-function populateTable() {
+function populateJumperTable() {
     // Empty content string
     var tableContent = '';
 
