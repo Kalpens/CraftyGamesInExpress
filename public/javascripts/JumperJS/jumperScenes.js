@@ -179,6 +179,7 @@ Crafty.e('2D, Canvas, Text, Mouse')
         for (e in all) all[e].destroy();
         Crafty.enterScene('ViewScores');
   });
+//KAPEC SIS IR TE
     addScore();
 });
 
@@ -218,6 +219,7 @@ Crafty.defineScene('JumperStart', function () {
             Crafty.enterScene('JumperGame');
         });
 });
+
 function addScore() {
     var txt;
     var person = prompt("Please enter your userName:", "");

@@ -147,6 +147,7 @@ Crafty.defineScene('FlappyGame', function () {
         });
     function gameOver(){
         Crafty.pause();
+        Crafty.enterScene('JumperGameOver');
     }
     function getRandomArbitrary(min, max) {
         return Math.floor(Math.random() * (max - min)) + min;
@@ -207,4 +208,33 @@ Crafty.defineScene('StartScreen', function () {
     function startGane(){
         Crafty.pause();
     }
+});
+Crafty.defineScene('JumperGameOver', function () {
+
+    Crafty.init(screenWidth,screenHeight, document.getElementById('game'));
+    Crafty.background('#000000 url(/images/background-lava.jpg) no-repeat center center');
+    Crafty.e('2D, DOM, Text').attr({x:280, y:200}).text("GAME OVER").textFont({size:'60px', weight:'bold'}).textColor('red');
+    Crafty.e("2D, Canvas, Text").attr({x:250, y:400}).text('Your score: ' + score).textFont({size:'40px', weight:'bold'}).textColor('red');
+    Crafty.e('2D, Canvas, Text, Mouse')
+        .attr({x:230, y:500})
+        .text('Play again')
+        .textFont({size:'60px', weight:'bold'})
+        .textColor('yellow')
+        .bind('Click', function(MouseEvent){
+            score = 0;
+            var all = Crafty.debug();
+            for (e in all) all[e].destroy();
+            Crafty.enterScene('FlappyGame');
+        });
+    Crafty.e('2D, Canvas, Text, Mouse')
+        .attr({x:380, y:500})
+        .text('View High Scores')
+        .textFont({size:'20px', weight:'bold'})
+        .textColor('red')
+        .bind('Click', function(MouseEvent){
+            score = 0;
+            var all = Crafty.debug();
+            for (e in all) all[e].destroy();
+            Crafty.enterScene('FlappyGame');
+        });
 });
