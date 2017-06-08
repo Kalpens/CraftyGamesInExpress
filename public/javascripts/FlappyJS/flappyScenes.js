@@ -6,7 +6,7 @@ var spawnIntensity = 150;
 var minSpawnHeight = 50;
 var maxSpawnHeight = 500;
 var gravityConst = 800;
-var difficulity = true;
+var difficulity = false;
 //The higher speed, the higher pipes move
 var speed = 3;
 Crafty.defineScene('FlappyGame', function () {
@@ -78,7 +78,7 @@ Crafty.defineScene('FlappyGame', function () {
     scoreText.text('Score:' + score);
 
     var bird = Crafty.e('Bird, 2D, Canvas, Solid, Jumper, Gravity, Collision, flappy_start, SpriteAnimation')
-        .attr({x: 200, y: screenHeight/1.5 -80, w: 40, h: 40})
+        .attr({x: 200, y: screenHeight/2, w: 40, h: 40})
         .gravity()
         .gravityConst(gravityConst)
         .bind('KeyUp', function(e) {
@@ -199,7 +199,7 @@ Crafty.defineScene('StartScreen', function () {
         .textFont({size:'40px', weight:'bold'})
         .textColor('Blue')
         .bind('Click', function(MouseEvent){
-            difficulity = true;
+            difficulity = false;
             this.textColor('Blue');
             hard.textColor('Black');
         });
