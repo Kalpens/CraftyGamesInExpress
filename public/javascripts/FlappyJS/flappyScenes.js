@@ -183,7 +183,7 @@ Crafty.defineScene('StartScreen', function () {
         });
     var hard = Crafty.e('2D, Canvas, Text, Mouse')
         .attr({ x: screenWidth / 2 + 60 ,
-            y: screenHeight / 2,})
+            y: screenHeight / 6,})
         .text('Hard')
         .textFont({size:'40px', weight:'bold'})
         .textColor('Black')
