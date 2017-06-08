@@ -1,1 +1,1 @@
-Crafty.enterScene('FlappyGame');
+Crafty.enterScene('StartScreen');
