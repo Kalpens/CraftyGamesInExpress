@@ -15,14 +15,16 @@ Crafty.defineScene('FlappyGame', function () {
     if(difficulity){
         minSpawnHeight = 0;
         maxSpawnHeight = 700;
-        spawnIntensity = 80;
+        spawnIntensity = 100;
         speed = 5;
+        gravityConst = 600;
     }
     else{
         minSpawnHeight = 50;
         maxSpawnHeight = 500;
         spawnIntensity = 150;
         speed = 3;
+        gravityConst = 800;
     }
     Crafty.audio.add("die", "audio/FlappyAudio/die.wav");
     Crafty.audio.add("hit", "audio/FlappyAudio/hit.wav");

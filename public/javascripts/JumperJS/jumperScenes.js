@@ -12,8 +12,6 @@ Crafty.init(screenWidth,screenHeight, document.getElementById('game'));
 Crafty.background('#000000 url(/images/background-clouds.png) no-repeat center center');
 Crafty.audio.add("jump", "audio/JumperAudio/jump.wav");
 Crafty.audio.add("swoosh", "audio/JumperAudio/swoosh.mp3");
-//Paddle sprite
-Crafty.sprite("images/paddle_red.png", {paddle:[0,0,620,120]});
     var assetsObj = {
         "sprites": {
             "images/Player/player.png": {
@@ -26,6 +24,18 @@ Crafty.sprite("images/paddle_red.png", {paddle:[0,0,620,120]});
                     player_idle: [0, 0],
                     player_left: [0, 1],
                     player_right: [0, 2]
+                }
+            },
+            "images/paddle.png": {
+                // This is the width of each image in pixels
+                tile: 620,
+                // The height of each image
+                tileh: 120,
+                // We give names to two individual images
+                map: {
+                    paddle_green: [0, 0],
+                    paddle_blue: [0, 1],
+                    paddle_red: [0, 2]
                 }
             },
             "images/Player/fire.png": {
@@ -177,10 +187,16 @@ function drop()
 {
     var randomx = spawnpointsx[getRandomArbitrary(0, spawnpointsx.length)];
 	var paddleWidth = 80 - score/2;
-    Crafty.e('paddle, 2D, DOM, Solid, Gravity, Collision')
+    Crafty.e('paddle, 2D, DOM, Solid, Gravity, Collision, paddle_green, SpriteAnimation')
         .attr({x: randomx, y: spawnpointy, w: paddleWidth, h: 10})
         .gravity()
         .gravityConst(30)
+        .reel("green", 1000, [
+            [0, 0] ])
+        .reel("blue", 1000, [
+            [1, 0] ])
+        .reel("red", 1000, [
+            [2, 0] ])
 		.onHit('floor', function(hitDatas) { // on collision with floor
         for (var i = 0; i < hitDatas.length; ++i) { // for each floor hit
           hitDatas[i].obj.destroy(); // destroy the floor
@@ -189,6 +205,10 @@ function drop()
         .bind("EnterFrame", function() {
             if (this.y > screenHeight - 20)
                 this.destroy();
+            if(score > 30 && score < 60)
+                this.animate("blue", -1);
+            if(score >= 60)
+                this.animate("red", -1);
         });
 }
 Crafty.e('spawner, 2D')
