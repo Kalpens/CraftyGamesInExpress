@@ -178,61 +178,6 @@ Crafty.defineScene('FlappyGame', function () {
         return Math.floor(Math.random() * (max - min)) + min;
     }
 });
-
-Crafty.defineScene('StartScreen', function () {
-    Crafty.init(screenWidth,screenHeight, document.getElementById('game'));
-    Crafty.background('#000000 url(/images/background-scenery.png) no-repeat center center');
-
-    Crafty.e('2D, DOM, Text')
-        .attr({
-            x: screenWidth / 2 - 100,
-            y: screenHeight / 5,
-            z: 100
-        })
-        .text('Fljuppy')
-        .textAlign()
-        .textFont({
-            size: '80px'
-        });
-
-    Crafty.e('2D, Canvas, Text, Mouse')
-        .attr({ x: screenWidth / 2 - 20 ,
-                y: screenHeight / 2.5,})
-        .text('Play')
-        .textFont({size:'40px', weight:'bold'})
-        .textColor('Orange')
-        .bind('Click', function(MouseEvent){
-            score = 0;
-            Crafty.enterScene('FlappyGame');
-        });
-    var hard = Crafty.e('2D, Canvas, Text, Mouse')
-        .attr({ x: screenWidth / 2 + 60 ,
-            y: screenHeight / 2,})
-        .text('Hard')
-        .textFont({size:'40px', weight:'bold'})
-        .textColor('Black')
-        .bind('Click', function(MouseEvent){
-            difficulity = true;
-            this.textColor('Blue');
-            easy.textColor('Black');
-        });
-    var easy = Crafty.e('2D, Canvas, Text, Mouse')
-        .attr({ x: screenWidth / 2 - 100 ,
-            y: screenHeight / 2,})
-        .text('Easy')
-        .textFont({size:'40px', weight:'bold'})
-        .textColor('Blue')
-        .bind('Click', function(MouseEvent){
-            difficulity = false;
-            this.textColor('Blue');
-            hard.textColor('Black');
-        });
-
-    function startGane(){
-        Crafty.pause();
-    }
-});
-
 function addUser(){
     if(difficulity)
         difName = "Hard";
