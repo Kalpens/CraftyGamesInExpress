@@ -12,6 +12,7 @@ var db = monk('mongodb://Kalpens:weaksecurity123@ds133231.mlab.com:33231/mareksm
 var index = require('./routes/index');
 var users = require('./routes/users');
 var jumperUsers = require('./routes/jumperUsers');
+var fljuppyUsers = require('./routes/fljuppyUsers');
 
 var app = express();
 
@@ -35,6 +36,7 @@ app.use(function(req,res,next){
 app.use('/', index);
 app.use('/users', users);
 app.use('/jumperusers', jumperUsers);
+app.use('/fljuppyusers', fljuppyUsers);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

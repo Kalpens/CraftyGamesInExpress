@@ -18,6 +18,12 @@ Crafty.defineScene('FlappyGame', function () {
         spawnIntensity = 80;
         speed = 5;
     }
+    else{
+        minSpawnHeight = 50;
+        maxSpawnHeight = 500;
+        spawnIntensity = 150;
+        speed = 3;
+    }
     Crafty.audio.add("die", "audio/FlappyAudio/die.wav");
     Crafty.audio.add("hit", "audio/FlappyAudio/hit.wav");
     Crafty.audio.add("point", "audio/FlappyAudio/point.wav");
@@ -147,7 +153,24 @@ Crafty.defineScene('FlappyGame', function () {
         });
     function gameOver(){
         Crafty.pause();
-        Crafty.enterScene('JumperGameOver');
+        $('#game').remove();
+        $('body').append('<div id="game" class="bgimg"> </div>');
+        $('#game').append(
+            '<br><br><br><br><br><br><br><br>' +
+            '<div class="container">' +
+            '</div><div class="container">' +
+            '<table id="fljuppyUserList" width="320"></table>' +
+            '</div>'  +
+            '<div class="rightContainer">' +
+            '<h3 style="Color: red; font-size: 60px">Game Over</h3>' +
+            '<h1>Your score:' + score + '</h1><br><input id="Username" type="text" placeholder="Username">' +
+            '<div class="divider"></div>' +
+            '<button id="AddBtn" class="button" width="50" onclick="addUser()">Add highscore</button>' +
+            '<br><button id="homeBtn" class="button" width="50" onclick="homeScreen()">Home</button>' +
+            '<div class="divider"></div>' +
+            '<button id="playAgainBtn" class="button" width="50" onclick="playAgain()">Play Again</button>' +
+            '</div>');
+        populateFljuppyTable();
     }
     function getRandomArbitrary(min, max) {
         return Math.floor(Math.random() * (max - min)) + min;
@@ -178,8 +201,6 @@ Crafty.defineScene('StartScreen', function () {
         .textColor('Orange')
         .bind('Click', function(MouseEvent){
             score = 0;
-            var all = Crafty.debug();
-            for (e in all) all[e].destroy();
             Crafty.enterScene('FlappyGame');
         });
     var hard = Crafty.e('2D, Canvas, Text, Mouse')
@@ -209,32 +230,25 @@ Crafty.defineScene('StartScreen', function () {
         Crafty.pause();
     }
 });
-Crafty.defineScene('JumperGameOver', function () {
 
-    Crafty.init(screenWidth,screenHeight, document.getElementById('game'));
-    Crafty.background('#000000 url(/images/background-lava.jpg) no-repeat center center');
-    Crafty.e('2D, DOM, Text').attr({x:280, y:200}).text("GAME OVER").textFont({size:'60px', weight:'bold'}).textColor('red');
-    Crafty.e("2D, Canvas, Text").attr({x:250, y:400}).text('Your score: ' + score).textFont({size:'40px', weight:'bold'}).textColor('red');
-    Crafty.e('2D, Canvas, Text, Mouse')
-        .attr({x:230, y:500})
-        .text('Play again')
-        .textFont({size:'60px', weight:'bold'})
-        .textColor('yellow')
-        .bind('Click', function(MouseEvent){
-            score = 0;
-            var all = Crafty.debug();
-            for (e in all) all[e].destroy();
-            Crafty.enterScene('FlappyGame');
-        });
-    Crafty.e('2D, Canvas, Text, Mouse')
-        .attr({x:380, y:500})
-        .text('View High Scores')
-        .textFont({size:'20px', weight:'bold'})
-        .textColor('red')
-        .bind('Click', function(MouseEvent){
-            score = 0;
-            var all = Crafty.debug();
-            for (e in all) all[e].destroy();
-            Crafty.enterScene('FlappyGame');
-        });
-});
+function addUser(){
+    if(difficulity)
+        difName = "Hard";
+    else
+        difName = "Easy";
+    addFljuppyUser(event, $('#Username').val(), score, difName);
+    populateFljuppyTable();
+    $('#Username').remove();
+    $('#AddBtn').remove();
+}
+function playAgain(){
+    score = 0;
+    $('#game').remove();
+    $('body').append('<div id="game" style="margin:0 auto; border: thin solid black"> </div>');
+    Crafty.enterScene('FlappyGame');
+}
+function homeScreen(){
+    score = 0;
+    $('#game').remove();
+    $('#startScreen').show();
+}

@@ -6,19 +6,88 @@ body {
 a {
   color: #00B7FF;
 }
-table {
+#jumperUserList {
   border: 1px solid;
   padding: 5px;
   margin: 0 auto;
   box-shadow: 3px 3px 2px #ff0000;
   transition: 0.5s;
   align-self: center;
-  border-color: #ff0000 #0000ff;
+  border-color: #ff0000 #ff0000;
 }
-table:hover{
+#jumperUserList:hover{
   box-shadow: 3px 3px 0px transparent;
   transition: 0.5s;
 }
-tr {
+#jumperUserList tr {
   background-color: #ff0000
+}
+#fljuppyUserList {
+  border: 0px solid;
+  padding: 5px;
+  margin: 0 auto;
+  align-self: center;
+}
+#fljuppyUserList tr {
+  background-color: palevioletred;
+}
+button {
+  width: 130px;
+  height: 40px;
+  background: linear-gradient(to bottom, palevioletred 0%,mediumvioletred 100%); /* W3C */
+  border: none;
+  border-radius: 5px;
+  position: relative;
+  border-bottom: 4px solid mediumvioletred;
+  color: #fbfbfb;
+  font-weight: 600;
+  font-family: 'Open Sans', sans-serif;
+  text-shadow: 1px 1px 1px rgba(0,0,0,.4);
+  font-size: 15px;
+  text-align: left;
+  text-indent: 5px;
+  box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2);
+  cursor: pointer;
+
+  /* Just for presentation */
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+button:active {
+  box-shadow: 0px 2px 0px 0px rgba(0,0,0,.2);
+  top: 1px;
+}
+.container{
+  width: 20%;
+  height: 100%;
+  float: left;
+  text-align: center;
+  display:inline-block;
+  vertical-align:top;
+}
+.rightContainer{
+  width: 60%;
+  height: 100%;
+  float: left;
+  text-align: center;
+  display:inline-block;
+  vertical-align:top;
+}
+.rightContainer button{
+  display: inline-block;
+}
+.bgimg {
+  background-image: url('../images/background-gameOver.jpg');
+  background-size: cover;
+  display:block;
+  margin:0 auto;
+  border: thin solid black;
+  height:800px; width: 1280px;
+}
+
+.divider{
+  width:20px;
+  height:auto;
+  display:inline-block;
 }

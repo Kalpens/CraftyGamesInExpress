@@ -71,6 +71,7 @@ figure.snip1174 a {
     -webkit-transform: translateY(50%);
     transform: translateY(50%);
     opacity: 0;
+    cursor: default;
 }
 figure.snip1174 a:hover {
     background-color: rgba(0, 0, 0, 0.2);

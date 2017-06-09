@@ -10,11 +10,43 @@ var doubleJumps = 0;
 
 Crafty.init(screenWidth,screenHeight, document.getElementById('game'));
 Crafty.background('#000000 url(/images/background-clouds.png) no-repeat center center');
+Crafty.audio.add("jump", "audio/JumperAudio/jump.wav");
+Crafty.audio.add("swoosh", "audio/JumperAudio/swoosh.mp3");
 //Paddle sprite
 Crafty.sprite("images/paddle_red.png", {paddle:[0,0,620,120]});
-Crafty.sprite("images/Player/player_idle.png", {player_idle:[0,1,80,110]});
-Crafty.sprite("images/Player/player_jump_left.png", {player_jump_left:[1,0,80,110]});
-Crafty.sprite("images/Player/player_jump_right.png", {player_jump_right:[1,1,80,110]});
+    var assetsObj = {
+        "sprites": {
+            "images/Player/player.png": {
+                // This is the width of each image in pixels
+                tile: 80,
+                // The height of each image
+                tileh: 110,
+                // We give names to two individual images
+                map: {
+                    player_idle: [0, 0],
+                    player_left: [0, 1],
+                    player_right: [0, 2]
+                }
+            },
+            "images/Player/fire.png": {
+                // This is the width of each image in pixels
+                tile: 512,
+                // The height of each image
+                tileh: 512,
+                // We give names to two individual images
+                map: {
+                    fire_1: [0, 0],
+                    fire_2: [1, 0],
+                    fire_3: [2, 0],
+                    fire_4: [0, 1],
+                    fire_5: [1, 1],
+                    fire_6: [2, 1]
+                }
+            }
+        }
+    };
+
+    Crafty.load(assetsObj);
 //Floor
 Crafty.e('floor, 2D, Canvas, Solid, Color')
     .attr({x: 0, y: screenHeight/1.5 - 10, w: screenWidth, h: 10})
@@ -37,11 +69,14 @@ Crafty.e("2D, DOM, Color, solid, bottom")
     .color('black');
 
 //Player
-var player1 = Crafty.e('Player, 2D, Canvas, Color, Solid, Twoway, Gravity, Collision, GroundAttacher, player_idle')
+var player1 = Crafty.e('Player, 2D, Canvas, Color, Solid, Twoway, Gravity, Collision, GroundAttacher, player_idle, SpriteAnimation')
     .attr({x: 20, y: screenHeight/1.5 -80, w: 40, h: 55})
     .twoway(250)
     .gravity('Solid')
-    .sprite('player_idle')
+    .reel("stale", 1, [[0, 0]])
+    .reel("left", 1, [[1, 0]])
+    .reel("right", 1, [[2, 0]])
+    .animate("stale", -1)
 	//Does not allow jumping if feet are not above ground
     .bind("CheckLanding", function(ground) {
         if (this.y + this.h > ground.y + this.dy) {
@@ -53,6 +88,7 @@ var player1 = Crafty.e('Player, 2D, Canvas, Color, Solid, Twoway, Gravity, Colli
 			this.jump();
 			score++;
 			scoreText.text('Score:' + score);
+			Crafty.audio.play("jump");
 			//After every 10 jumps adds a doublejump
 			if(score % 10 == 0){
 				doubleJumps++;
@@ -73,13 +109,28 @@ var player1 = Crafty.e('Player, 2D, Canvas, Color, Solid, Twoway, Gravity, Colli
     })
     //Checks for arrow up keypress and deducts doublejumps
     .bind('KeyUp', function(e) {
-    if (e.key == Crafty.keys.UP_ARROW) {
-      if(doubleJumps > 0){
+        if (e.key == Crafty.keys.UP_ARROW) {
+            if(doubleJumps > 0){
 				doubleJumps--;
+				Crafty.audio.play("swoosh");
 				doublejumpText.text('Doublejumps:' + doubleJumps);
 			}
-    }
+         }
+        if (e.key == Crafty.keys.LEFT_ARROW) {
+              this.animate("stale", -1);
+         }
+        if (e.key == Crafty.keys.RIGHT_ARROW) {
+            this.animate("stale", -1);
+        }
   })
+    .bind('KeyDown', function(e) {
+        if (e.key == Crafty.keys.LEFT_ARROW) {
+            this.animate("left", -1);
+        }
+        if (e.key == Crafty.keys.RIGHT_ARROW) {
+            this.animate("right", -1);
+        }
+    })
 	//This prevents from going out of screen
     .bind('Moved', function(evt){
         if (this.hit('solid'))
@@ -110,11 +161,22 @@ var doublejumpText = Crafty.e('2D, DOM, Text')
 
 scoreText.text('Score:' + score);
 doublejumpText.text('Doublejumps:' + doubleJumps);
-
+for(a = 0; a < 35; a++){
+    Crafty.e('fire, 2D, DOM, fire_1, SpriteAnimation')
+        .attr({x:  (25 * a) - 25, y: screenHeight-50, w: 80, h: 80})
+        .reel("onFire", 1000, [
+            [0, 0],
+            [1, 0],
+            [2, 0],
+            [0, 1],
+            [1, 1],
+            [2, 1] ])
+        .animate("onFire", -1);
+}
 function drop()
 {
     var randomx = spawnpointsx[getRandomArbitrary(0, spawnpointsx.length)];
-	var paddleWidth = 80 - score/1.5;
+	var paddleWidth = 80 - score/2;
     Crafty.e('paddle, 2D, DOM, Solid, Gravity, Collision')
         .attr({x: randomx, y: spawnpointy, w: paddleWidth, h: 10})
         .gravity()
@@ -131,9 +193,9 @@ function drop()
 }
 Crafty.e('spawner, 2D')
 .bind("EnterFrame", function(){
-    spawnIntensity = score;
-    if(score < 10)
-    spawnIntensity = 10;
+    spawnIntensity = score * 2;
+    if(score < 8)
+    spawnIntensity = 16;
     if (Crafty.frame() % spawnIntensity == 0)
         drop();
 });
@@ -179,7 +241,6 @@ Crafty.e('2D, Canvas, Text, Mouse')
         for (e in all) all[e].destroy();
         Crafty.enterScene('ViewScores');
   });
-//KAPEC SIS IR TE
     addScore();
 });
 
